@@ -1,0 +1,71 @@
+﻿@model IEnumerable<YourProjectName.ViewModels.MyData.MyDataViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="row"  >
+        <div class="col-md-8 offset-md-2 mt-3 ">
+            <a asp-action="Form" asp-controller="Home" class="btn btn-success">
+                Add New My Data
+            </a>
+            <a asp-action="CreatePDF" asp-controller="Home" class="btn btn-success">
+                Generate PDF
+            </a>
+        </div>
+        <div class="col-md-8 offset-md-2 mt-2">
+            <div class="table-responsive">
+                <table id="myTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Signature</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                                <td>@item.Name</td>
+                                <td>@item.Contact</td>
+                                <td>
+                                @if (item.Signature != null)
+                                {
+                                        <img src="data:image/jpg;base64,@Convert.ToBase64String(item.Signature)" width="20" />
+                               
+                                }
+                               
+                            </td>
+                                <td class="text-center">
+                                    <a asp-action="Form" asp-controller="Home" class="btn btn-success" asp-route-id="@item.Id">
+                                        Edit
+                                    </a>
+                                    <a asp-action="DeleteMyData" asp-controller="Home" asp-route-id="@item.Id" class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')">
+                                        Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+    </div>
+ 
+</div>
+
+@section Scripts{
+    <script>
+    $(document).ready(function(){
+            $('#myTable').DataTable();
+    });
+    </script>
+
+}
